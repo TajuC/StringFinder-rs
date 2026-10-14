@@ -1,0 +1,40 @@
+[package]
+name = "stringfinder"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+description = "Finds a string inside every text file on every drive, using the NTFS master file table and SIMD byte search"
+repository = "https://github.com/TajuC/StringFinder-rs"
+readme = "README.md"
+keywords = ["search", "grep", "ntfs", "mft", "simd"]
+categories = ["command-line-utilities", "filesystem"]
+
+[dependencies]
+aho-corasick = "1.1.5"
+csv = "1.4.0"
+encoding_rs = "0.8.42"
+lexopt = "0.3.2"
+memchr = "2.8.3"
+rayon = "1.12.0"
+
+[target."cfg(windows)".dependencies]
+windows-sys = { version = "0.61.2", features = [
+    "Wdk_Foundation",
+    "Wdk_Storage_FileSystem",
+    "Wdk_System_SystemServices",
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_Storage_FileSystem",
+    "Win32_System_IO",
+    "Win32_System_Ioctl",
+    "Win32_System_SystemInformation",
+    "Win32_System_Threading",
+] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
